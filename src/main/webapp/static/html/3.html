@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>填写信息</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+</head>
+<body style="height: auto;">
+<div class="wrapper">
+    <div class="logo"><img src="images/logo.png" /></div>
+    <div class="read-more"><a href="3.html"><img src="images/read-more.png" /></a></div>
+
+    <!--form-->
+    <div class="form">
+        <div class="form-info"><img src="images/form-info.png" /></div>
+        <div class="form-enter">
+            <input type="text" id="phone" placeholder="输入您的手机号" />
+        </div>
+        <div class="form-enter">
+            <input type="text" id="name" placeholder="输入您的大名" />
+        </div>
+        <div class="form-enter">
+            <textarea rows="3" id="address" placeholder="输入您的地址"></textarea>
+        </div>
+        <div class="form-btn">
+            <a href="javascript:;"><img src="images/form-btn.png" /></a>
+        </div>
+    </div>
+
+    <!--rule-->
+    <!--<div class="read-more-wrapper">-->
+        <!--<img class="hide" src="images/rule.png" />-->
+    <!--</div>-->
+</div>
+<div>
+	<audio style="visibility: hidden;" id='myMusic' src="0706.mp3" autoplay='autoplay' loop='loop' controls></audio>
+</div>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+//        $(".read-more").click(function () {
+//            $(".read-more-wrapper").addClass("open").find("img").removeClass("hide");
+//        });
+//        $(".read-more-wrapper").click(function(){
+//            $(this).removeClass("open");
+//        });
+
+        $(".form-btn").find("a").click(function(){
+        	var userPhone = $("#phone").val();
+            var userName = $("#name").val();
+            var userAddress = $("#address").val();
+        	 $.ajax({
+                 type: "POST",
+                 url: '../../app/user_ishas',
+                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                 data: {
+                     mobile: userPhone,
+                     name:userName,
+                     address: userAddress
+                 },
+                 //dataType: "json",
+                 success: function (data) {
+                 	if(data.code == "2") {
+                         if(userPhone.length > 0 && userName.length > 0 && userAddress.length > 0){
+                             console.log(userPhone + "+++" + userName + "+++" + userAddress);
+                             $.ajax({
+                                 type: "POST",
+                                 url: '../../app/user_add',
+                                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                 data: {
+                                     mobile: userPhone,
+                                     name:userName,
+                                     address: userAddress
+                                 },
+                                 //dataType: "json",
+                                 success: function (data) {
+                                 	if(data.code == "0") {
+                                         window.location.href = "5.html";
+                                 	} else {
+                                 		alert(data.attachment);
+                                 	}
+                             
+                                 },
+                                 error:function(){
+                                     alert("提交失败，请重新提交!")
+                                 }
+                             });
+                         }
+                         else{
+                             alert("您的信息没有输入完成！");
+                         }
+                 	} else if(data.code == "0"){
+                 		  window.location.href = "5.html";
+                 	} else {
+                 		alert(data.attachment);
+                 	}
+                 },
+                 error:function(){
+                     alert("提交失败，请重新提交!")
+                 }
+             });
+        });
+    });
+</script>
+</body>
+</html>

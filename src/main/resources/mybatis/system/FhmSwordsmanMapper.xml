@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FhmSwordsmanMapper">
+	<resultMap id="BaseResultMap" type="com.fh.entity.system.FhmSwordsman">
+		<id column="swordsman_id" property="id" jdbcType="BIGINT" />
+		<result column="swordsman_name" property="name" jdbcType="VARCHAR" />
+		<result column="swordsman_sex" property="sex" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		swordsman.id as swordsman_id, swordsman.name as
+		swordsman_name, swordsman.sex as
+		swordsman_sex
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from fhm_swordsman swordsman
+		where swordsman.id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		fhm_swordsman
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.fh.entity.system.FhmSwordsman">
+		insert into fhm_swordsman (id,
+		name,sex,type,createTime,ip,userId)
+		values (#{id,jdbcType=BIGINT},
+		#{name,jdbcType=VARCHAR},
+		#{sex,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR},
+		#{ip,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.fh.entity.system.FhmSwordsman">
+		insert into fhm_swordsman
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.fh.entity.system.FhmSwordsman">
+		update fhm_swordsman
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.fh.entity.system.FhmSwordsman">
+		update
+		fhm_swordsman
+		set name = #{name,jdbcType=VARCHAR},
+		sex =
+		#{sex,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 用户列表(app用户组) -->
+	<select id="swordslistPage" parameterType="page" resultType="pd">
+		select u.id,
+		u.name,
+		u.sex,
+		u.type,
+		u.createtime,
+		a.username
+		from fhm_swordsman u left join sys_app_user a on u.userId = a.USER_ID
+		<if test="pd.USERNAME != null and pd.USERNAME != ''"><!-- 用户名检索 -->
+			WHERE
+			u.name LIKE CONCAT('%', #{pd.USERNAME},'%') or
+			a.username LIKE CONCAT('%', #{pd.USERNAME},'%')
+		</if>
+		order by u.createTime desc
+	</select>
+</mapper>

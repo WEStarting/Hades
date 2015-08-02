@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>返回中</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="logo"><img src="images/logo.png" /></div>
+    <div class="read-more"><a href="3.html"><img src="images/read-more.png" /></a></div>
+
+    <!--go back-->
+    <div class="go-back">
+        <img src="images/go-back.png" />
+    </div>
+
+    <!--rule-->
+    <!--<div class="read-more-wrapper">-->
+        <!--<img class="hide" src="images/rule.png" />-->
+    <!--</div>-->
+</div>
+<div>
+	<audio style="visibility: hidden;" id='myMusic' src="0706.mp3" autoplay='autoplay' loop='loop' controls></audio>
+</div>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+//        $(".read-more").click(function () {
+//            $(".read-more-wrapper").addClass("open").find("img").removeClass("hide");
+//        });
+//        $(".read-more-wrapper").click(function(){
+//            $(this).removeClass("open");
+//        });
+        setTimeout(function(){
+            window.location.href = "6.html";
+        },1500);
+    });
+</script>
+</body>
+</html>

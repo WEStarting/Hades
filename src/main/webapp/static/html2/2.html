@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no, email=no">
+<title>选择角色</title>
+<link type="text/css" rel="stylesheet" href="css/swiper.min.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="logo">
+			<img src="images/logo.png" />
+		</div>
+		<div class="read-more">
+			<a href="3.html"><img src="images/read-more.png" /></a>
+		</div>
+		<!--arrow-->
+		<div class="arrow">
+			<span class="l"><img src="images/btn-left.png" /></span> <span
+				class="r"><img src="images/btn-right.png" /></span>
+		</div>
+		<!-- Swiper -->
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<!--<div class="swiper-slide">-->
+				<!--<img src="images/role-main.png" />-->
+				<!--<span></span>-->
+				<!--</div>-->
+				<div class="swiper-slide">
+					<img src="images/role1.png" />
+                    <span>我是<input type="text" value="煎饼" />侠</span><br />
+					<input type="hidden" value="煎饼侠" />
+				</div>
+				<div class="swiper-slide">
+					<img src="images/role2.png" />
+                    <span>我是<input type="text" value="馒头" />侠</span>
+                    <input type="hidden" value="馒头侠" />
+				</div>
+				<div class="swiper-slide">
+					<img src="images/role3.png" />
+                    <span>我是<input type="text" value="坚挺" />侠</span>
+                    <input type="hidden" value="坚挺侠" />
+				</div>
+				<div class="swiper-slide">
+					<img src="images/role4.png" />
+                    <span>我是<input type="text" value="傲娇" />侠</span>
+                    <input type="hidden" value="傲娇侠" />
+				</div>
+				<div class="swiper-slide">
+					<img src="images/role5.png" />
+                    <span>我是<input type="text" value="长腿" />侠</span>
+                    <input type="hidden" value="长腿侠" />
+				</div>
+				<div class="swiper-slide">
+					<img src="images/role6.png" />
+                    <span>我是<input type="text" value="麦兜" />侠</span>
+                    <input type="hidden" value="麦兜侠" />
+				</div>
+			</div>
+			<!-- Add Pagination -->
+			<!--<div class="swiper-pagination"></div>-->
+		</div>
+
+		<div class="swiper-btn">
+			<a href="javascript:;"><img src="images/btn-complete.png" /></a>
+		</div>
+
+		<!--rule-->
+        <!--
+		<div class="read-more-wrapper open">
+			<img src="images/rule.png" />
+		</div>
+		-->
+	</div>
+	<div>
+		<audio style="visibility: hidden;" id='myMusic' src="0706.mp3" autoplay='autoplay' loop='loop' controls></audio>
+	</div>
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/getUrlVars.js"></script>
+	<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="gb2312"></script>
+	<script type="text/javascript">
+		var swiper = new Swiper('.swiper-container', {
+			//    pagination: '.swiper-pagination',
+			speed : 500,
+            loop : true,
+			paginationClickable : true
+		});
+		$(function() {
+//			$("span.t3").click(function() {
+//                $(".read-more-wrapper").addClass("open").find("img").removeClass("hide");
+//            });
+//			$(".read-more-wrapper").click(function() {
+//				$(this).removeClass("open");
+//			});
+
+			$(".swiper-btn").find("a").click(function() {
+                //var userId = $.getUrlVar("userId");
+                //var commentText = $(".txt").val();
+
+                var inputName = $(".swiper-slide-active > span > input").val();
+                var inputType = $(".swiper-slide-active > input").val();
+                if (inputName.length > 0) {
+                    console.log(inputName + "+++" + inputType);
+                    $.ajax({
+                        type : "POST",
+                        url : '../../app/jbx_add',
+                        contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+                        data : {
+                            name : inputName,
+                            type : inputType
+                        },
+                        //dataType: "json",
+                        success : function(data) {
+                            //console.log(data.code);
+                            if (data.code == "0") {
+								var ip =  returnCitySN["cip"];
+                                window.location.href = "4.html?ip="+ip;
+                            } else {
+                                alert("提交失败，请重新提交")
+                            }
+                        },
+                        error : function() {
+                            alert("提交失败，请重新提交!")
+                        }
+                    });
+                } else {
+                    alert("请输入人物名称！");
+                }
+            });
+		});
+	</script>
+</body>
+</html>

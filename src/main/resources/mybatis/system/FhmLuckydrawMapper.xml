@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="FhmLuckydrawMapper">
+	<resultMap id="BaseResultMap" type="com.fh.entity.system.FhmLuckydraw">
+		<id column="Luckydraw_id" property="id" jdbcType="VARCHAR" />
+		<result column="Luckydraw_customer_id" property="customerId"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		Luckydraw.id as Luckydraw_id, Luckydraw.customer_id as
+		Luckydraw_customer_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from fhm_luckydraw Luckydraw
+		where Luckydraw.id =
+		#{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="String">
+		delete from
+		fhm_luckydraw
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.fh.entity.system.FhmLuckydraw">
+		insert into fhm_luckydraw (id,
+		customer_id)
+		values (#{id,jdbcType=VARCHAR},
+		#{customerId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.fh.entity.system.FhmLuckydraw">
+		insert into fhm_luckydraw
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="customerId != null">
+				customer_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="customerId != null">
+				#{customerId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.fh.entity.system.FhmLuckydraw">
+		update fhm_luckydraw
+		<set>
+			<if test="customerId != null">
+				customer_id = #{customerId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.fh.entity.system.FhmLuckydraw">
+		update
+		fhm_luckydraw
+		set customer_id = #{customerId,jdbcType=VARCHAR}
+		where id
+		= #{id,jdbcType=VARCHAR}
+	</update>
+	<select id="countNo" parameterType="int" resultType="int">
+		select
+		count(1)
+		from
+		fhm_luckydraw
+	</select>
+	
+		<!-- 用户列表(全部) -->
+	<select id="listAllLuckydraw" parameterType="pd" resultType="pd">
+		select  l.id,a.USERNAME,a.LAST_LOGIN,a.PHONE,a.ADDRESS
+		from fhm_luckydraw l,sys_app_user a WHERE l.id=a.swordsman_id
+		where 1 = 1
+		<if test="USERNAME != null and USERNAME != ''"><!-- 用户名检索 -->
+			and (
+				u.USERNAME LIKE CONCAT(CONCAT('%', #{USERNAME}),'%')
+				or
+				u.EMAIL LIKE CONCAT(CONCAT('%', #{USERNAME}),'%')
+				or
+				u.NUMBER LIKE CONCAT(CONCAT('%', #{USERNAME}),'%')
+				)
+		</if>
+		<if test="lastLoginStart!=null and lastLoginStart!=''"><!-- 到期时间检索 -->
+			and u.END_TIME &gt;= #{lastLoginStart} 
+		</if>
+		<if test="lastLoginEnd!=null and lastLoginEnd!=''"><!-- 到期时间检索 -->
+			and u.END_TIME &lt;= #{lastLoginEnd} 
+		</if>
+	</select>
+</mapper>
